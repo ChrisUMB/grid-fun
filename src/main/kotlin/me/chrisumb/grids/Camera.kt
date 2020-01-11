@@ -17,7 +17,7 @@ class Camera(
 
     val aspectRatio get() = window.width / window.height.toFloat()
 
-    var projectionMatrix = Matrix4f().setPerspective(fov, aspectRatio, 0.1f, 1000f)
+    var projectionMatrix = Matrix4f().setPerspective(Math.toRadians(fov.toDouble()).toFloat(), aspectRatio, 0.1f, 1000f)
         private set
 
     var viewProjection = Matrix4f()
@@ -25,7 +25,7 @@ class Camera(
 
     var fov = fov
         set(value) {
-            projectionMatrix = Matrix4f().setPerspective(fov, aspectRatio, 0.1f, 1000f)
+            projectionMatrix = Matrix4f().setPerspective(Math.toRadians(value.toDouble()).toFloat(), aspectRatio, 0.1f, 1000f)
             field = value
         }
 
@@ -80,7 +80,7 @@ class Camera(
             val difference = Vector2f(mousePosition).sub(lastMousePosition)
             lastMousePosition.set(mousePosition)
 
-            val sensMousePosition = difference.mul(0.17f * 0.015f)
+            val sensMousePosition = difference.mul(0.11f * 0.015f)
             if (sensMousePosition.x != 0f) {
                 rotation.rotateAxis(sensMousePosition.x, Vector3f(0f, 1f, 0f))
             }
@@ -94,6 +94,6 @@ class Camera(
     }
 
     fun setProjection() {
-        projectionMatrix = Matrix4f().setPerspective(fov, aspectRatio, 0.1f, 1000f)
+        projectionMatrix = Matrix4f().setPerspective(Math.toRadians(fov.toDouble()).toFloat(), aspectRatio, 0.1f, 1000f)
     }
 }

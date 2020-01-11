@@ -6,6 +6,6 @@ in vec3 vPos;
 uniform samplerCube uSkybox;
 
 void main() {
-    fColor = texture(uSkybox, normalize(vPos)).rgb;
-    //    fColor = normalize(vPos) * .5 + .5;
+    fColor = mix(texture(uSkybox, normalize(vPos)).rgb, normalize(vPos) * .5 + .5, 0.5);
+    //    fColor = ;
 }

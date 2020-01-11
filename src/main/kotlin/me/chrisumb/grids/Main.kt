@@ -8,9 +8,9 @@ import org.joml.Vector3f
 
 fun main() {
     Engine.start(1280, 720, "Test") {
-        drawables.add(SkyBox(Asset["textures/skyboxes/vaporwave"]))
+        drawables.add(SkyBox(Asset["textures/skyboxes/dev"]))
         val cube = Cube(Vector3f(0f, 0f, -3f))
-        cube.texture = Texture2D(Asset["textures/skyboxes/vaporwave/back.png"])
+        cube.texture = Texture2D(Asset["textures/skyboxes/dev/back.png"])
         drawables.add(cube)
     }
 }

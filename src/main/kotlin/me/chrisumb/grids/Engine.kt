@@ -23,7 +23,7 @@ object Engine {
         private set
 
     var voidColor = Vector3f(.25f, .25f, 1f)
-    val camera by lazy { Camera(Vector3f(), Quaternionf(), 70f, window) }
+    val camera by lazy { Camera(Vector3f(), Quaternionf(), 85f, window) }
 
     fun start(width: Int, height: Int, title: String, init: Engine.() -> Unit) {
         if (started) {

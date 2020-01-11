@@ -1,10 +1,12 @@
 package me.chrisumb.grids.render.texture
 
 import me.chrisumb.grids.asset.Asset
+import me.chrisumb.grids.util.glCall
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11C
+import org.lwjgl.opengl.GL11C.glTexParameteri
 import org.lwjgl.opengl.GL12C
-import org.lwjgl.opengl.GL13C.GL_CLAMP_TO_BORDER
+import org.lwjgl.opengl.GL13C.*
 import org.lwjgl.opengl.GL14C
 import java.awt.image.BufferedImage
 import java.nio.ByteBuffer
@@ -13,7 +15,7 @@ abstract class Texture(val asset: Asset, val target: Int) {
 
     val id: Int = GL11C.glGenTextures()
 
-    var filtering = Filtering.NEAREST
+    var filtering = Filtering.LINEAR
         set(value) {
             field = value
             bind()
@@ -28,17 +30,18 @@ abstract class Texture(val asset: Asset, val target: Int) {
         }
 
     open fun bind() {
+        glActiveTexture(GL_TEXTURE0)
         GL11C.glBindTexture(target, id)
     }
 
     protected open fun updateFiltering() {
-        GL11C.glTexParameteri(target, GL11C.GL_TEXTURE_MAG_FILTER, filtering.id)
-        GL11C.glTexParameteri(target, GL11C.GL_TEXTURE_MIN_FILTER, filtering.id)
+        glCall { glTexParameteri(target, GL11C.GL_TEXTURE_MAG_FILTER, filtering.id) }
+        glCall { glTexParameteri(target, GL11C.GL_TEXTURE_MIN_FILTER, filtering.id) }
     }
 
     protected open fun updateWrapping() {
-        GL11C.glTexParameteri(target, GL11C.GL_TEXTURE_WRAP_S, wrapping.id)
-        GL11C.glTexParameteri(target, GL11C.GL_TEXTURE_WRAP_T, wrapping.id)
+        glCall { glTexParameteri(target, GL11C.GL_TEXTURE_WRAP_S, wrapping.id) }
+        glCall { glTexParameteri(target, GL11C.GL_TEXTURE_WRAP_T, wrapping.id) }
     }
 
     enum class Filtering(val id: Int) {
@@ -62,9 +65,9 @@ abstract class Texture(val asset: Asset, val target: Int) {
             for (y in 0 until height) {
                 for (x in 0 until width) {
                     val argb = image.getRGB(x, y)
-//                    val a = (argb shr 24) and 0xFF
-//                    val rgba = (argb shl 8) or a
-                    buffer.putInt(argb)
+                    val a = (argb shr 24) and 0xFF
+                    val rgba = (argb shl 8) or a
+                    buffer.putInt(rgba)
                 }
             }
 

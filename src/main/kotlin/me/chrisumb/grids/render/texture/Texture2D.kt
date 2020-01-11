@@ -1,6 +1,7 @@
 package me.chrisumb.grids.render.texture
 
 import me.chrisumb.grids.asset.Asset
+import me.chrisumb.grids.util.toByteBuffer
 import org.lwjgl.opengl.GL11C.*
 
 class Texture2D(asset: Asset) : Texture(asset, GL_TEXTURE_2D) {
@@ -11,8 +12,8 @@ class Texture2D(asset: Asset) : Texture(asset, GL_TEXTURE_2D) {
 
     init {
         bind()
-        glTexImage2D(target, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imgToBuffer(image))
         updateFiltering()
         updateWrapping()
+        glTexImage2D(target, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.toByteBuffer())
     }
 }
