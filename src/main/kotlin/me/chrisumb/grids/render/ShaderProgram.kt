@@ -1,5 +1,6 @@
 package me.chrisumb.grids.render
 
+import me.chrisumb.grids.util.glCall
 import org.joml.Matrix4f
 import org.joml.Vector2fc
 import org.joml.Vector3fc
@@ -42,29 +43,29 @@ class ShaderProgram(vararg shaders: Shader) {
     }
 
     operator fun set(name: String, value: Float) {
-        glUniform1f(getUniformLocation(name), value)
+        glCall { glUniform1f(getUniformLocation(name), value) }
     }
 
     operator fun set(name: String, value: Vector2fc) {
-        glUniform2f(getUniformLocation(name), value.x(), value.y())
+        glCall { glUniform2f(getUniformLocation(name), value.x(), value.y()) }
     }
 
     operator fun set(name: String, value: Vector3fc) {
-        glUniform3f(getUniformLocation(name), value.x(), value.y(), value.z())
+        glCall { glUniform3f(getUniformLocation(name), value.x(), value.y(), value.z()) }
     }
 
     operator fun set(name: String, value: Vector4fc) {
-        glUniform4f(getUniformLocation(name), value.x(), value.y(), value.z(), value.w())
+        glCall { glUniform4f(getUniformLocation(name), value.x(), value.y(), value.z(), value.w()) }
     }
 
     operator fun set(name: String, value: Matrix4f) {
         MemoryStack.stackPush().use {
-            glUniformMatrix4fv(getUniformLocation(name), false, value.getTransposed(it.mallocFloat(16)))
+            glCall { glUniformMatrix4fv(getUniformLocation(name), false, value.getTransposed(it.mallocFloat(16))) }
         }
     }
 
     operator fun set(name: String, value: Int) {
-        glUniform1i(getUniformLocation(name), value)
+        glCall { glUniform1i(getUniformLocation(name), value) }
     }
 
     operator fun set(name: String, value: Boolean) {
@@ -76,7 +77,7 @@ class ShaderProgram(vararg shaders: Shader) {
     }
 
     fun bind() {
-        glUseProgram(id)
+        glCall { glUseProgram(id) }
     }
 
 }

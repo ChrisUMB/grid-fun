@@ -1,5 +1,6 @@
 package me.chrisumb.grids.render
 
+import me.chrisumb.grids.util.glCall
 import org.lwjgl.opengl.GL15C.*
 
 class GLBuffer(val target: Int = GL_ARRAY_BUFFER) {
@@ -11,16 +12,16 @@ class GLBuffer(val target: Int = GL_ARRAY_BUFFER) {
     }
 
     fun data(data: FloatArray): GLBuffer {
-        glBufferData(target, data, GL_STATIC_DRAW)
+        glCall { glBufferData(target, data, GL_STATIC_DRAW) }
         return this
     }
 
     fun data(data: IntArray): GLBuffer {
-        glBufferData(target, data, GL_STATIC_DRAW)
+        glCall { glBufferData(target, data, GL_STATIC_DRAW) }
         return this
     }
 
     fun bind() {
-        glBindBuffer(target, id)
+        glCall { glBindBuffer(target, id) }
     }
 }

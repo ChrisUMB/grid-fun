@@ -4,14 +4,20 @@ import java.awt.image.BufferedImage
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-fun BufferedImage.toByteBuffer(format: ColorFormat = ColorFormat.RGBA): ByteBuffer {
+fun BufferedImage.toByteBuffer(
+    format: ColorFormat = ColorFormat.RGBA,
+    flippedX: Boolean = false,
+    flippedY: Boolean = false
+): ByteBuffer {
     val pixels = getRGB(0, 0, width, height, null, 0, width)
 
     val buffer = ByteBuffer.allocateDirect(height * width * format.order.size).order(ByteOrder.nativeOrder())
     val hasAlpha = colorModel.hasAlpha()
 
-    for (y in 0 until height) {
-        for (x in 0 until width) {
+    val xRange = if (flippedX) width - 1 downTo 0 else 0 until width
+    val yRange = if (flippedY) height - 1 downTo 0 else 0 until height
+    for (y in yRange) {
+        for (x in xRange) {
             val pixel = pixels[y * width + x]
 
             format.order.forEach {
